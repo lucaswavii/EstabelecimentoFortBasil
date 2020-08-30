@@ -8,7 +8,7 @@ module.exports = {
       host : '3.218.56.54',
       user : 'root',
       password : 'Wa180279',
-      database : 'sisger_d'
+      database : 'dbEstabeleci_d'
     },
     migrations: {
       directory: './src/database/migrations'
@@ -22,7 +22,7 @@ module.exports = {
       host : '3.218.56.54',
       user : 'root',
       password : 'Wa180279',
-      database : 'sisger_h'
+      database : 'dbEstabeleci_h'
     },
     migrations: {
       directory: './src/database/migrations'
@@ -36,7 +36,7 @@ module.exports = {
       host : '3.218.56.54',
       user : 'root',
       password : 'Wa180279',
-      database : 'sisger'
+      database : 'dbEstabeleci_p'
     },
     migrations: {
       directory: './src/database/migrations'
