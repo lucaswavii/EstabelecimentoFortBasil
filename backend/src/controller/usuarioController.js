@@ -8,22 +8,24 @@ module.exports = {
             
         const x_access_token = request.headers['x-access-token'];
         
-        if (!x_access_token) return response.status(401).json('Toke não informado.');
-        
+        if (!x_access_token ) return response.status(401).json({success: false, error:'Serviço não autorizado.'});
+    
         const token = validador.ValidaToken(x_access_token);
         
         try {
         
             const { email, senha, ativo } = request.body;
            
+            if (!email ) return  response.status(401).json({success: false, error:'Informe o e-mail.'});
+            if (!senha ) return response.status(401).json({success: false, error:'Informe a senha.'});
                 
             const [id] = await connection('usuario').insert({
                 email,
                 senha:crypto.createHash("md5").update(senha).digest("hex"),
-                ativo,
+                ativo: ativo ? ativo : false,
              });
 
-            return response.json({id});
+            return response.status(200).json({success: true, error:''});
                 
         } catch (error) {
             return response.status(401).json('Token inválido.');
@@ -32,68 +34,86 @@ module.exports = {
     async update(request, response) {
         const x_access_token = request.headers['x-access-token'];
         
-        if (!x_access_token) return response.status(401).json('Toke não informado.');
+        if (!x_access_token ) return response.status(401).json({success: false, error:'Serviço não autorizado.'});
         const token = validador.ValidaToken(x_access_token);
         
         try {
         
             const { email, senha, ativo } = request.body;
     
+            if (!email ) return  response.status(401).json({success: false, error:'Informe o e-mail.'});
+            if (!senha ) return response.status(401).json({success: false, error:'Informe a senha.'});
+           
             const { id } = request.params;
             
             await connection('usuario').update({
                 email,
                 senha:crypto.createHash("md5").update(senha).digest("hex"),
-                ativo,
+                ativo: ativo ? ativo : false,
             }).where('id', id);
             
-            return response.json({id});
+            return response.status(200).json({success: true, error:''});
             
         } catch (error) {
-            return response.status(401).json(error);
+            return response.status(500).json({success: false, error:'Ocorreu um erro inesperado no servidor.'});
         }
     },
     async delete(request, response) {
 
         const x_access_token = request.headers['x-access-token'];
+        
         const { id } = request.params;
         
-        if (!x_access_token) return response.status(401).json({ auth: false, message: 'Toke não informado.' });
-        const token = validador.ValidaToken(x_access_token);
-        if (!id) return response.status(401).json('Id não informado.');
+        if (!x_access_token ) return response.status(401).json({success: false, error:'Serviço não autorizado.'});
+        
+        
+        if (!id) return response.status(401).json({success: false, error:'Informe o ID para deletar.'});
         
         try {        
-            await connection('usuario').where('id', id).delete();
-            return response.status(204).send();       
+            
+            const token = validador.ValidaToken(x_access_token);
+            
+            await connection('usuario')
+            .where('id', id)
+            .delete();
+            
+            return response.status(204).json({success: true, error:'Excluído com sucesso.'});       
         } catch (error) {
-            return response.status(401).json(error);    
+            return response.status(500).json({success: false, error:'Ocorreu um erro inesperado.'});    
         }
     },
     async all(request, response) {
+        
         const x_access_token = request.headers['x-access-token'];
         
-        if (!x_access_token ) return response.status(401).json('Token não informado.');
-        const token = validador.ValidaToken(x_access_token);                 
+        if (!x_access_token ) return response.status(401).json({success: false, error:'Serviço não autorizado.'});
+        
         
         try {
             
-            const usuarios = await connection('usuario')
-            .select('*').orderBy('usuario.id');
+            const token = validador.ValidaToken(x_access_token);                 
             
-            return response.json(usuarios);
+            const usuarios = await connection('usuario')
+            .select('*')
+            .orderBy('usuario.id');
+            
+            return response.status(200).json({data:usuarios, success: true, error:''});
         
         } catch (error) {
-            return response.status(401).json({ auth: false, message: 'Token inválido.' });
+            return response.status(401).json({success: false, error:'Ocorreu um erro inesperado no servidor.'});
         }
     },
     async getId(request, response) {
       
         const x_access_token = request.headers['x-access-token'];
+        
         const { id } = request.params;
         
-        if (!x_access_token ) return response.status(401).json({ auth: false, message: 'Token não informado.' });
+        if (!x_access_token ) return response.status(401).json({success: false, error:'Serviço não autorizado.'});
+        
         const token = validador.ValidaToken(x_access_token);                 
-        if (!id ) return response.status(401).json('Id não informado.');
+
+        if (!id ) return response.status(401).json({success: false, error:'Informe o ID do usuário.'});
         
         try {
             const usuarios = await connection("usuario")
@@ -101,10 +121,10 @@ module.exports = {
             .select('*')
             .first();
     
-            return response.json(usuarios);
+            return response.status(200).json({data:usuarios, success: true, error:''});
 
         } catch (error) {
-            return response.status(401).json({ auth: false, message: 'Token inválido.' });    
+            return response.status(500).json({success: false, error:'Ocorreu um erro inesperado no servidor.'});    
         }
         
     },
@@ -112,28 +132,28 @@ module.exports = {
         
         const { email, senha } = request.body;
         
-        if (!email ) return  response.status(401).json('Informe o usuario.');
-        if (!senha ) return response.status(401).json('Informe a senha.');
+        if (!email ) return  response.status(401).json({success: false, error:'Informe o e-mail.'});
+        if (!senha ) return response.status(401).json({success: false, error:'Informe a senha.'});
         
         try {
             const usuarios = await connection('usuario')
             .limit(1)         
-            .where('usuario.email', nome)
+            .where('usuario.email', email)
             .andWhere("usuario.senha", crypto.createHash("md5").update(senha).digest("hex"))            
-            .select('*')
-            .first();
+            .select('*');
                 
-            if ( usuarios.length == 0) return response.status(401).json('Usuário ou Senha Inválidos!');
+            if ( usuarios.length == 0) return response.status(401).json({success: false, error:'Usuário ou Senha Inválidos!'});
             
             const token = validador.criarToken(usuarios[0]);
             
             // Incluir token no retorno do usuario
             usuarios.token = token;
             
-            return response.json(usuarios);
+            return response.status(200).json({data:usuarios, success: true, error:''});
         
         } catch (error) {
-            return response.json(error);
+            console.log(error)
+            return response.status(401).json({success: false, error:'Ocorreu um erro inesperado no servidor'});
         }    
     },
     async registro(request, response) {
@@ -141,8 +161,8 @@ module.exports = {
         
         const { email, senha } = request.body;
         
-        if (!email ) return response.status(401).json('Informe o Nome.');
-        if (!senha ) return response.status(401).json('Informe a senha.');
+        if (!email ) return response.status(401).json({success: false, error:'Informe o e-mail para registro.'});
+        if (!senha ) return response.status(401).json({success: false, error:'Informe a senha para registro.'});
  
         try {
 
@@ -151,7 +171,7 @@ module.exports = {
             .where('usuario.email', email)
             .select('*');
 
-            if ( usuarios.length > 0 ) return response.status(401).json('Usuário possui acesso ao sistema.');
+            if ( usuarios.length > 0 ) return response.status(401).json({success: false, error:`O usuário ${ email} já registrado.`});
             
             const usuario  = await connection('usuario').insert({ 
                 email, 
@@ -159,17 +179,17 @@ module.exports = {
                 ativo:true
             });
              
-            return response.json('Usuário cadastrado com sucesso.');
+            return response.status(200).json({data:usuario, success: true, error:'Usuário cadastrado com sucesso!'});
             
         } catch (error) {
-            return response.status(401).json('Ocorreu um erro ao tentar cadastrar novo usuário.');
+            return response.status(500).json({data:[], success: false, error:'Ocorreu um erro inesperado no servidor.'});
         }               
     },
     async esqueci(request, response) {
         
         const { email } = request.body;
         
-        if (!email ) return response.status(401).json('Informe o Nome.');
+        if (!email ) return response.status(400).json({success: false, error:'Informe o e-mail'});
         
         try {
 
@@ -178,13 +198,13 @@ module.exports = {
             .where('usuario.email', email)
             .select('*');
 
-            if ( usuarios.length == 0 ) return response.status(401).json('Não foi encontrado nenhum usuario com o email informado.');
+            if ( usuarios.length == 0 ) return response.status(400).json({success: false, error:`O usuário ${ email} não encontrado.`});
             
              
-            return response.json(usuarios);
+            return response.status(200).json({data:usuarios, success: false, error:''});
             
         } catch (error) {
-            return response.status(401).json('Ocorreu um erro ao tentar lembrar sua senha de usuário.');
+            return response.status(500).json({success: false, error:`Ocorreu um erro inesperado. Error: ${ error }.`});
         }               
     }      
 }
