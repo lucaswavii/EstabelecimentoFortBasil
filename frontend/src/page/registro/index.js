@@ -3,7 +3,6 @@ import Api from '../../service/api'
 import { toast } from 'react-toastify';
 import Mensagem from '../../commom/Mensagem';
 import { Link } from 'react-router-dom'
-import '../registro/styles.css';
 
 class Registro extends Component {
 

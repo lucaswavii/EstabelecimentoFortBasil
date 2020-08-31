@@ -1,33 +1,27 @@
-import React,{ Component } from 'react';
-import '../home/styles.css';
+import React, { Component } from "react";
+import { toast } from 'react-toastify';
 
-class Home extends Component {
-
+class Home extends Component { 
+    
     constructor(props){
         super(props);
     }
 
-    async componentDidMount() {}
+    async componentDidMount() {
+    }
 
     render() {
-
-        return (
-            <div id="login">
-                <h3 className="text-center text-white pt-5">Gestão Estabelecimento</h3>
-                <div className="container">
-                    <div className="form-group">
-                        <button type="submit" name="submit" className="btn btn-info btn-md">Estabelecimento</button>
-                        <button type="submit" name="submit" className="btn btn-info btn-md">Usuários</button>
-                        <button type="submit" name="submit" className="btn btn-info btn-md">Sair</button>
-                 
-                    </div>
-
-
+       
+        return  (
+                <div className="content-wrapper">
+                    <section className="content-header">        
+                    </section>
+                    <section className="content">
+                    </section>
                 </div>
-            </div>
-                
-        )
-    } 
+        );
+    
+    }
 }
 
 export default Home;

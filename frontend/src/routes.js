@@ -1,11 +1,12 @@
 import React from 'react';
 import {BrowserRouter, PrivateRoute, Redirect, Route, Switch} from 'react-router-dom';
 import { isAuthenticated } from "./service/auth";
-
+import Content from './page/template/Content'
 import Login from './page/login';
 import Esqueci from './page/esqueci';
 import Registro from './page/registro';
 import Home from './page/home';
+import Estabelecimento from './page/estabelecimento'
 
 function Routes() {
 
@@ -29,8 +30,10 @@ function Routes() {
                 <Route path="/login" exact component={Login} />
                 <Route path="/registro" component={Registro} />
                 <Route path="/esqueci" component={Esqueci} />
-                <PrivateRoute path="/home" component={Home} />
-                  
+                <Content>
+                  <PrivateRoute path="/home" component={Home} />
+                  <PrivateRoute path="/estabelecimento" component={Estabelecimento} />
+                </Content>  
             </Switch>
         </BrowserRouter> )
 

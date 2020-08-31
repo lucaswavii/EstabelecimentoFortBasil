@@ -142,14 +142,14 @@ module.exports = {
             .andWhere("usuario.senha", crypto.createHash("md5").update(senha).digest("hex"))            
             .select('*');
                 
-            if ( usuarios.length == 0) return response.status(401).json({success: false, error:'Usuário ou Senha Inválidos!'});
+            if ( usuarios.length == 0) return response.status(401).json({dados:[], success: false, error:'Usuário ou Senha Inválidos!'});
             
             const token = validador.criarToken(usuarios[0]);
             
             // Incluir token no retorno do usuario
-            usuarios.token = token;
+            usuarios[0].token = token;
             
-            return response.status(200).json({data:usuarios, success: true, error:''});
+            return response.json(usuarios);
         
         } catch (error) {
             console.log(error)
