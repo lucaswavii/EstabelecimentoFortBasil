@@ -19,6 +19,7 @@
   "homepage": "https://github.com/lucaswavii/EstabelecimentoFortBasil#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "cpf-cnpj-validator": "^1.0.2",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.5",

@@ -6,7 +6,7 @@ module.exports = {
     // Valida se o TOKEN informado ainda está ativo
     ValidaToken( token ) {        
         if (!token) return { success: false, error:'Failed to authenticate token.' };     
-        return jwt.verify(token, segredo );        
+        return jwt.verify(token, segredo.secret );        
     },
 
     // Cria TOKEN de acesso

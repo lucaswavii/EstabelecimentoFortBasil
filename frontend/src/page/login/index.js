@@ -37,6 +37,8 @@ class Login extends Component {
             email, 
             senha
         }).then(response => {
+            toast.warn(' ' + JSON.stringify(response))
+            
             const { id, email, token } = response.data[0]
 
             localStorage.setItem('token'    , token   );
@@ -48,18 +50,17 @@ class Login extends Component {
                 senha:'',
             })
           
-            this.props.history.push('/home');
+            this.props.history.push('/home'); 
         }).catch(e =>{
+
             this.setState({
                 email:'',
                 senha:'',
             })
             
             const { error } = e.response.data
-            toast.error(error);
+            toast.error(error); 
         });
-
-
     }
 
     render() {
@@ -89,15 +90,20 @@ class Login extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <button type="submit" class="btn btn-primary btn-block"  onClick={ this.hadleSubmit }>Login</button>
                             </div>
                             <div className="form-group">
-                                <Link to="/registro"> Registre-se</Link>
-                                <br></br>
-                                <Link to="/esqueci"> Esqueceu senha?</Link>
-                            </div>
 
+                                <p class="mb-1">
+                                    <Link to="/esqueci"> Esqueceu senha?</Link>
+                                </p>
+                                <p class="mb-0">
+                                    <Link to="/registro"> Registre-se</Link>
+                                </p>
+
+                            </div>
+                            
                         </form>
                     </div>
                 </div>

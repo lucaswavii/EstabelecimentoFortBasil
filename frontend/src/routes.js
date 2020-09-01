@@ -7,6 +7,7 @@ import Esqueci from './page/esqueci';
 import Registro from './page/registro';
 import Home from './page/home';
 import Estabelecimento from './page/estabelecimento'
+import Usuario from './page/usuario';
 
 function Routes() {
 
@@ -33,6 +34,7 @@ function Routes() {
                 <Content>
                   <PrivateRoute path="/home" component={Home} />
                   <PrivateRoute path="/estabelecimento" component={Estabelecimento} />
+                  <PrivateRoute path="/usuario" component={Usuario} />
                 </Content>  
             </Switch>
         </BrowserRouter> )

@@ -58,37 +58,43 @@ class Registro extends Component {
     render() {
 
         return (
-            <body> 
-                <div id="login">
-                    <h3 className="text-center text-white pt-5">Gestão Estabelecimento</h3>
-                    <div className="container">
-                        <div id="login-row" className="row justify-content-center align-items-center">
-                            <div id="login-column" className="col-md-6">
-                                <div id="login-box" className="col-md-12">
-                                    <form id="login-form" className="form" onSubmit={ this.hadleSubmit }>
-                                        <h3 className="text-center text-info">Registro de Usuário</h3>
-                                        <div className="form-group">
-                                            <label for="username" className="text-info">E-mail:</label><br></br>
-                                            <input type="mail" name="email" id="email" placeholder="Informe seu e-mail" className="form-control" required value={ this.state.email } onChange={ e => this.setState({ email: e.target.value })}/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="password" className="text-info">Senha:</label><br></br>
-                                            <input type="password" name="password" id="password" placeholder="Informe sua senha" className="form-control" required value={ this.state.senha } onChange={ e => this.setState({ senha: e.target.value })}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <Link onClick={ this.hadleBack }> Retornar Login</Link>
-                                        </div>
-                                        <div className="form-group">
-                                            <button type="submit" name="submit" className="btn btn-info btn-md" onClick={ this.hadleSubmit }>Registrar</button>
-                                        </div>
-                                    </form>
+            <body class="hold-transition login-page">
+                <div class="login-box">
+                    <a href="/login"><b>Gerenciador</b> Estabelecimento</a>
+                </div>
+                <div class="card">
+                    <div class="card-body login-card-body">
+                        <p class="login-box-msg">Registre-se com e-mail e senha</p>
+                        <form id="login-form" className="form" onSubmit={ this.hadleSubmit}>
+                            <div class="input-group mb-3">
+                                <input type="mail" name="email" id="email" placeholder="Informe seu e-mail" className="form-control" required value={ this.state.email } onChange={ e => this.setState({ email: e.target.value })}/>
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-envelope"></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="input-group mb-3">
+                            <input type="password" name="password" id="password" placeholder="Informe sua senha" className="form-control" required value={ this.state.senha } onChange={ e => this.setState({ senha: e.target.value })}/>
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-lock"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-success btn-block"  onClick={ this.hadleSubmit }>Registrar</button>
+                            </div>
+                            <div className="form-group">
+                                <Link onClick={ this.hadleBack }> Retornar Login</Link>
+                            </div>
+
+                        </form>
                     </div>
                 </div>
                 <Mensagem />
             </body>
+
         ) 
     }
 }

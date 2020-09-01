@@ -5,15 +5,15 @@ exports.up = function(knex) {
         table.string('cnpj'         , 20 ).notNullable();
         table.string('razao'        , 200).notNullable();
         table.string('fantasia'     , 200).notNullable();
-        table.string('cep'          , 9  ).notNullable();
-        table.string('endereco'     , 200).notNullable();
-        table.string('numero'       , 30 ).notNullable();
-        table.string('complemento'  , 30 ).notNullable();
-        table.string('uf'           , 2  ).notNullable();
-        table.string('cidade'       , 160).notNullable();
-        table.string('bairro'       , 160).notNullable();
-        table.string('fone'         , 30 ).notNullable();
-        table.string('email'        , 30 ).notNullable();        
+        table.string('cep'          , 9  );
+        table.string('endereco'     , 200);
+        table.string('numero'       , 30 );
+        table.string('complemento'  , 200);
+        table.string('uf'           , 2  );
+        table.string('cidade'       , 160);
+        table.string('bairro'       , 160);
+        table.string('fone'         , 30 );
+        table.string('email'        , 160);        
         table.boolean('ativo');
         // Chave estrangeira da tabela usuário.
         table.integer('cadastrador').unsigned().notNullable();
