@@ -147,8 +147,8 @@ module.exports = {
             
             // Incluir token no retorno do usuario
             usuarios[0].token = token;
-            
-            return response.json(usuarios);
+            Array.length
+            return response.status(200).json(usuarios);
         
         } catch (error) {
             console.log(error)
